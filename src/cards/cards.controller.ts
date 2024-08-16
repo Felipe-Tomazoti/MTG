@@ -34,7 +34,7 @@ export class CardsController {
         return await this.cardsService.delete(id)
     }
 
-    @Get('/seedingDeck/:id')
+    @Post('/seedingDeck/:id')
     async createDeckByLegendary(@Param('id') id: string, @Res() res: Response): Promise<Response>{
         const result = await this.cardsService.createDeckByLegendary(id);
         return res.status(result.statusCode).send({ message: result.message});

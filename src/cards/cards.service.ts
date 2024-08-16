@@ -3,6 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Card } from './card';
 import { Model } from 'mongoose';
 import { CardInterface } from './card.interface';
+import * as fs from 'fs';
+import * as path from 'path';
+const cardsCreated: CardInterface[] = [];
 
 @Injectable()
 export class CardsService {
@@ -45,8 +48,10 @@ export class CardsService {
                 power: card.power,
                 toughness: card.toughness
             }
-            await this.create(cardsAll);
+            const cardCreated = await this.create(cardsAll);
+            cardsCreated.push(cardCreated);
         }
+        return cardsCreated;
     }
 
     async createDeckByLegendary(legend: string){
@@ -71,8 +76,16 @@ export class CardsService {
                 toughness: obj.toughness
             }
 
-            await this.allCards(colors[0]);
-            await this.create(card);
+            const cardLegendary = await this.create(card);
+            cardsCreated.push(cardLegendary);
+            const cards = await this.allCards(colors);
+
+            fs.writeFile(path.resolve(__dirname, '..', '..', 'src', 'cards', 'deck.json'), JSON.stringify(cards, null, 2), (err) => {
+                if(err) {
+                    console.log('Deu erro: ' + err);
+                }
+            });
+
             return { message: "Ready Deck", statusCode: 201}
 
         } catch (error) {
