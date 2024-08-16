@@ -12,49 +12,73 @@ export class CardsService {
     constructor(@InjectModel(Card.name) private cardModel: Model<Card>) { }
 
     async getAllCards(): Promise<Card[]> {
-        return await this.cardModel.find().exec();
+        try {
+            return await this.cardModel.find().exec();
+        } catch (err) {
+            throw new err;
+        }
     }
 
     async create(card: Card | CardInterface): Promise<Card> {
-        const cardCreated = new this.cardModel(card);
-        return await cardCreated.save();
+        try {
+            const cardCreated = new this.cardModel(card);
+            return await cardCreated.save();
+        } catch (err) {
+            throw new err;
+        }
     }
 
     async getCardById(id: string): Promise<Card> {
-        return await this.cardModel.findById(id).exec();
+        try {
+            return await this.cardModel.findById(id).exec();
+        } catch (err) {
+            throw new err;
+        }
     }
 
     async update(id: string, card: Card): Promise<Card> {
-        return await this.cardModel.findByIdAndUpdate(id, card).exec();
+        try {
+            return await this.cardModel.findByIdAndUpdate(id, card).exec();
+        } catch (err) {
+            throw new err;
+        }
     }
 
     async delete(id: string) {
-        const cardDeleted = this.cardModel.findOneAndDelete({ _id: id }).exec();
-        return await cardDeleted;
+        try {
+            const cardDeleted = this.cardModel.findOneAndDelete({ _id: id }).exec();
+            return await cardDeleted;
+        } catch (err) {
+            throw new err;
+        }
     }
 
     async allCards(color: string) {
-        const response = await fetch(`https://api.scryfall.com/cards/search?q=c%3A${color}&unique%3Dcards`);
-        const responseData = await response.json()
-        const data = await responseData.data.slice(0, 99);
-        for (const card of data) {
-            let colors = card.color_identity.map((color) => color);
-            let cardsAll: CardInterface = {
-                name: card.name,
-                description: card.oracle_text,
-                colors: colors,
-                type: card.type_line,
-                mana: card.mana_cost,
-                power: card.power,
-                toughness: card.toughness
+        try {
+            const response = await fetch(`https://api.scryfall.com/cards/search?q=c%3A${color}&unique%3Dcards`);
+            const responseData = await response.json()
+            const data = await responseData.data.slice(0, 99);
+            for (const card of data) {
+                let colors = card.color_identity.map((color) => color);
+                let cardsAll: CardInterface = {
+                    name: card.name,
+                    description: card.oracle_text,
+                    colors: colors,
+                    type: card.type_line,
+                    mana: card.mana_cost,
+                    power: card.power,
+                    toughness: card.toughness
+                }
+                const cardCreated = await this.create(cardsAll);
+                cardsCreated.push(cardCreated);
             }
-            const cardCreated = await this.create(cardsAll);
-            cardsCreated.push(cardCreated);
+            return cardsCreated;
+        } catch (err) {
+            throw new err;
         }
-        return cardsCreated;
     }
 
-    async createDeckByLegendary(legend: string){
+    async createDeckByLegendary(legend: string) {
         try {
             await this.cardModel.deleteMany()
             const response = await fetch(`https://api.scryfall.com/cards/search?q=name%3A${legend}`);
@@ -81,12 +105,12 @@ export class CardsService {
             const cards = await this.allCards(colors);
 
             fs.writeFile(path.resolve(__dirname, '..', '..', 'src', 'cards', 'deck.json'), JSON.stringify(cards, null, 2), (err) => {
-                if(err) {
+                if (err) {
                     console.log('Deu erro: ' + err);
                 }
             });
 
-            return { message: "Ready Deck", statusCode: 201}
+            return { message: "Ready Deck", statusCode: 201 }
 
         } catch (error) {
             console.error("Erro ao buscar carta lendária:", error);
