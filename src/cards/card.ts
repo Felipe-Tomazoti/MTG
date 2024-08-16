@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { IntegerType } from "mongodb";
 import { Document } from "mongoose";
 
 @Schema()
@@ -8,10 +9,22 @@ export class Card extends Document{
     name: string;
 
     @Prop()
-    color: string;
+    description: string;
+
+    @Prop({ type: [String]})
+    colors: string[];
 
     @Prop()
-    rarity: string;
+    type: string;
+
+    @Prop()
+    mana: string;
+
+    @Prop()
+    power: string;
+
+    @Prop()
+    toughness: string;
 }
 
 export const CardSchema = SchemaFactory.createForClass(Card);
