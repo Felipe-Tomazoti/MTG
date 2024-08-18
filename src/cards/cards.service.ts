@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CardInterface } from './card.interface';
 import * as fs from 'fs';
 import * as path from 'path';
+
 const cardsCreated: CardInterface[] = [];
 
 @Injectable()
@@ -48,6 +49,14 @@ export class CardsService {
         try {
             const cardDeleted = this.cardModel.findOneAndDelete({ _id: id }).exec();
             return await cardDeleted;
+        } catch (err) {
+            throw new err;
+        }
+    }
+    
+    async deleteAll(){
+        try {
+            await this.cardModel.deleteMany();
         } catch (err) {
             throw new err;
         }

@@ -54,6 +54,15 @@ export class CardsController {
         }
     }
 
+    @Delete()
+    async deleteAll(): Promise<void> {
+        try {
+            await this.cardsService.deleteAll()
+        } catch (err) {
+            console.log("Error: " + err);
+        }
+    }
+
     @Post('/seedingDeck/:id')
     async createDeckByLegendary(@Param('id') id: string, @Res() res: Response): Promise<Response> {
         try {
