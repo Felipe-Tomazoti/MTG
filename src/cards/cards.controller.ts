@@ -36,6 +36,15 @@ export class CardsController {
         }
     }
 
+    @Get('/byName/:name')
+    async getByName(@Param('name') name: string): Promise<Card[]> {
+        try {
+            return await this.cardsService.getByName(name);
+        } catch (err) {
+            console.log("Error: " + err);
+        }
+    }
+
     @Put(':id')
     async update(@Param('id') id: string, @Body() card: Card): Promise<Card> {
         try {

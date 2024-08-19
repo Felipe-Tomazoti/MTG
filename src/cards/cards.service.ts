@@ -10,7 +10,7 @@ const cardsCreated: CardInterface[] = [];
 
 @Injectable()
 export class CardsService {
-    constructor(@InjectModel(Card.name) private cardModel: Model<Card>) { }
+    constructor(@InjectModel(Card.name) private cardModel: Model<Card>) {}
 
     async getAllCards(): Promise<Card[]> {
         try {
@@ -32,6 +32,16 @@ export class CardsService {
     async getCardById(id: string): Promise<Card> {
         try {
             return await this.cardModel.findById(id).exec();
+        } catch (err) {
+            throw new err;
+        }
+    }
+
+    async getByName(name: string): Promise<Card[]> {
+        try {
+            return await this.cardModel.find({
+                name: { $regex: name, $options: 'i'},
+            }).exec();
         } catch (err) {
             throw new err;
         }
