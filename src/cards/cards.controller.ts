@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { Card } from './card';
 import { Response } from 'express';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('cards')
 export class CardsController {
     constructor(
