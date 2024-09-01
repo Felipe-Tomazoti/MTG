@@ -3,8 +3,11 @@ import { UsersService } from './users.service';
 import { User } from './users';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Public } from 'src/auth/auth.decorator';
+import { Roles } from 'src/authorization/roles.decorator';
+import { Role } from 'src/authorization/enums/functions.enum';
 
 @UseGuards(AuthGuard)
+@Roles(Role.Admin)
 @Controller('users')
 export class UsersController {
     constructor(

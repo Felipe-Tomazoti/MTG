@@ -3,6 +3,8 @@ import { CardsService } from './cards.service';
 import { Card } from './card';
 import { Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Roles } from 'src/authorization/roles.decorator';
+import { Role } from 'src/authorization/enums/functions.enum';
 
 @UseGuards(AuthGuard)
 @Controller('cards')

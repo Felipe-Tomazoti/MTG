@@ -22,7 +22,8 @@ export class UsersService {
             const userCreated = new this.userModel({
                 name: user.name,
                 email: user.email,
-                pwd: password
+                pwd: password,
+                roles: user.roles
             });
             return await userCreated.save();
         } catch (err) {
