@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, ForbiddenException, Get, NotFoundException, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -12,7 +12,7 @@ import { Role } from 'src/authorization/enums/functions.enum';
 export class UsersController {
     constructor(
         private readonly usersService: UsersService
-    ) {}
+    ) { }
 
     @Get()
     async getAllUsers(): Promise<User[]> {
@@ -24,6 +24,7 @@ export class UsersController {
     }
 
     @Public()
+    @Roles(Role.User, Role.Admin)
     @Post()
     async create(@Body() user: User): Promise<User> {
         try {
@@ -47,7 +48,13 @@ export class UsersController {
         try {
             return await this.usersService.update(id, user);
         } catch (err) {
-            console.log("Error: " + err);
+            if (err instanceof ForbiddenException) {
+                throw new ForbiddenException('Regular users cannot promote themselves to administrators');
+            }
+            if (err instanceof NotFoundException) {
+                throw new NotFoundException({ statusCode: 204, message: "User not found" });
+            }
+            throw err;
         }
     }
 

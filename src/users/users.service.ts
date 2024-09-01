@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from './users';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { hashSync } from 'bcrypt'
+import { Role } from 'src/authorization/enums/functions.enum';
 
 @Injectable()
 export class UsersService {
@@ -51,9 +52,17 @@ export class UsersService {
 
     async update(id: string, user: User): Promise<User> {
         try {
+            const mainRole = await this.userModel.findById(id).exec();
+            if(
+                mainRole.roles.includes(Role.User) && 
+                !mainRole.roles.includes(Role.Admin) && 
+                user.roles.includes(Role.Admin)
+            ) {
+                throw new ForbiddenException;
+            } 
             return await this.userModel.findByIdAndUpdate(id, user).exec();
         } catch (err) {
-            throw new err;
+            throw err;
         }
     }
 

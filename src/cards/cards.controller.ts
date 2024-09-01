@@ -7,6 +7,7 @@ import { Roles } from 'src/authorization/roles.decorator';
 import { Role } from 'src/authorization/enums/functions.enum';
 
 @UseGuards(AuthGuard)
+@Roles(Role.Admin)
 @Controller('cards')
 export class CardsController {
     constructor(
@@ -76,6 +77,7 @@ export class CardsController {
         }
     }
 
+    @Roles(Role.User, Role.Admin)
     @Post('/seedingDeck/:id')
     async createDeckByLegendary(@Param('id') id: string, @Res() res: Response): Promise<Response> {
         try {
