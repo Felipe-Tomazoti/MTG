@@ -17,8 +17,11 @@ export class UsersService {
         }
     }
 
-    async create(user: User): Promise<User> {
+    async create(user: User): Promise<{ message, statusCode}> {
         try {
+            if(await this.getUserByEmail(user.email)){
+                return { message: "Already registered user", statusCode: 409 }
+            }
             const password = await hashSync(user.pwd, 10);
             const userCreated = new this.userModel({
                 name: user.name,
@@ -26,7 +29,8 @@ export class UsersService {
                 pwd: password,
                 roles: user.roles
             });
-            return await userCreated.save();
+            await userCreated.save();
+            return { message: "Created user", statusCode: 201 };
         } catch (err) {
             throw new err;
         }

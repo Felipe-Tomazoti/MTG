@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { Public } from 'src/auth/auth.decorator';
 import { Roles } from 'src/authorization/roles.decorator';
 import { Role } from 'src/authorization/enums/functions.enum';
+import { Response } from 'express';
 
 @UseGuards(AuthGuard)
 @Roles(Role.Admin)
@@ -26,9 +27,10 @@ export class UsersController {
     @Public()
     @Roles(Role.User, Role.Admin)
     @Post()
-    async create(@Body() user: User): Promise<User> {
+    async create(@Body() user: User, @Res() res: Response): Promise<Response> {
         try {
-            return await this.usersService.create(user);
+            const result =  await this.usersService.create(user);
+            return res.status(result.statusCode).send({ message: result.message})
         } catch (err) {
             console.log("Error: " + err);
         }
