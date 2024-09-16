@@ -64,7 +64,7 @@ export class CardsService {
         }
     }
     
-    async deleteAll(){
+    async deleteAll() {
         try {
             await this.cardModel.deleteMany();
         } catch (err) {
@@ -75,7 +75,7 @@ export class CardsService {
     async allCards(color: string) {
         try {
             const response = await fetch(`https://api.scryfall.com/cards/search?q=c%3A${color}&unique%3Dcards`);
-            const responseData = await response.json()
+            const responseData = await response.json();
             const data = await responseData.data.slice(0, 99);
             for (const card of data) {
                 let colors = card.color_identity.map((color) => color);
@@ -99,15 +99,15 @@ export class CardsService {
 
     async createDeckByLegendary(legend: string) {
         try {
-            await this.cardModel.deleteMany()
+            // Fetch the legendary card
             const response = await fetch(`https://api.scryfall.com/cards/search?q=name%3A${legend}`);
             if (!response) {
-                throw new Error(`HTTP error! status: ${(await response).status}`)
+                throw new Error(`HTTP error! status: ${(await response).status}`);
             }
 
             const responseData: any = await response.json();
             const obj: any = responseData.data[0];
-            const colors = obj.color_identity.map((color) => color)
+            const colors = obj.color_identity.map((color) => color);
 
             const card: CardInterface = {
                 name: obj.name,
@@ -121,15 +121,28 @@ export class CardsService {
 
             const cardLegendary = await this.create(card);
             cardsCreated.push(cardLegendary);
+
             const cards = await this.allCards(colors);
 
-            fs.writeFile(path.resolve(__dirname, '..', '..', 'src', 'cards', 'deck.json'), JSON.stringify(cards, null, 2), (err) => {
+            const deckDirectory = path.resolve(__dirname, '..', '..', 'src', 'cards');
+            let deckNumber = 1;
+
+            while (fs.existsSync(path.join(deckDirectory, `deck${deckNumber}.json`))) {
+                deckNumber++;
+            }
+
+            const filename = `deck${deckNumber}.json`;
+            const filePath = path.join(deckDirectory, filename);
+
+            fs.writeFile(filePath, JSON.stringify(cards, null, 2), (err) => {
                 if (err) {
                     console.log('Deu erro: ' + err);
+                } else {
+                    console.log(`Arquivo ${filename} criado com sucesso.`);
                 }
             });
 
-            return { message: "Ready Deck", statusCode: 201 }
+            return { message: "Ready Deck", statusCode: 201 };
 
         } catch (error) {
             console.error("Erro ao buscar carta lendária:", error);
