@@ -1,5 +1,47 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+## Projeto para avaliação da matéria Desafio Profissional VI
+
+ 
+
+ Um sistema de gerenciamento de baralhos para o jogo de cartas Magic the Gathering. Utiliza a API do [Scryfall](https://scryfall.com/docs/api) para buscar e montar decks com base nas regras de formato Commander. Os decks são compostos por 1 comandante e 99 cartas seguindo as cores permitidas. Possui autenticação e autorização de usuários, suporte para múltiplos decks por usuário, cache para otimização de listagem e importação de decks via JSON com validação de regras. O sistema permite listagem de decks do usuário logado e acesso restrito para listar todos os decks. Testes de performance foram realizados para avaliar a eficiência do cache.
+
+
+### Trabalho realizado por:
+
+- André Fragalli Vassoler - RA: 22012716-2
+- Diogo Tizolim Cedran - RA: 22014212-2
+- Felipe Cesar Tomazoti de Souza - RA: 22019977-2
+
+#
+### Programas Necessário
+#### MongoDB Compass: [Donwload](https://www.mongodb.com/try/download/compass)  
+
+#### Postman: [Donwload](https://www.postman.com/downloads/)  
+ 
+
+#
+### Iniciando o projeto
+#### Clone o repositírio na sua maquina: 
+`$ git clone https://github.com/Felipe-Tomazoti/MTG.git`
+
+![image](https://github.com/user-attachments/assets/44a823a6-ebcc-4ebe-b70f-300dba7567d1)
+
+
+### Use o seguinte comando iniciar a API:
+`npm start`
+
+### Agora você já pode testar as rotas da API 
+#### Rotas de Cartas
+ - /importDeck - (@Post) 
+ - /seedingDeck/:id - (@Post)
+ - /myDecks - (@Get)
+ - /byName/:name - (@Get)
+ 
+  
+ ###
+   ___
+
+ <p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
@@ -15,59 +57,9 @@
 <a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
 <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
 <a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
