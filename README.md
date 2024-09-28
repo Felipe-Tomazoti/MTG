@@ -26,6 +26,19 @@
 ![image](https://github.com/user-attachments/assets/44a823a6-ebcc-4ebe-b70f-300dba7567d1)
 
 
+### Configurando o .env
+Lembre-se de preencher o arquivo .env da API conforme o exemplo abaixo.
+
+![image](https://github.com/user-attachments/assets/4257fcbf-20d3-4897-95a9-16367a2219a0)
+
+
+**ATENÇÃO**
+
+Antes de preencher as informações do .env, o usuário deve ser criado no MongoDB, conforme mostrado no exemplo abaixo.
+
+![image](https://github.com/user-attachments/assets/5030ead0-6368-4540-8a86-eacf435ae3c7)
+
+
 ### Use o seguinte comando iniciar a API:
 `npm start`
 
