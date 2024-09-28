@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Card } from './card';
 import { Model } from 'mongoose';
 import { CardInterface } from './card.interface';
+import { BadRequestException } from '@nestjs/common';
+import { Deck } from './deck';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -10,7 +12,36 @@ const cardsCreated: CardInterface[] = [];
 
 @Injectable()
 export class CardsService {
-    constructor(@InjectModel(Card.name) private cardModel: Model<Card>) {}
+    constructor(
+        @InjectModel(Card.name) private cardModel: Model<Card>,
+        @InjectModel(Deck.name) private deckModel: Model<Deck>
+    ) {}
+
+    async importDeck(deck: any): Promise<string> {
+            // Verifica se o baralho tem 100 cartas
+        if (deck.cards.length !== 100) {
+            throw new BadRequestException('O baralho deve conter exatamente 100 cartas.');
+        }
+    
+         // Verifica se há exatamente um comandante
+        const commanders = deck.cards.filter(card => card.type.includes('Legendary') && card.type.includes('Creature'));
+        if (commanders.length !== 1) {
+                throw new BadRequestException('O baralho deve conter exatamente um comandante lendário.');
+            }
+    
+         // Verifica se não há cartas duplicadas (exceto terrenos básicos)
+        const cardNames = new Set();
+        for (const card of deck.cards) {
+           if (cardNames.has(card.name) && !card.type.includes('Basic Land')) {
+                throw new BadRequestException(`A carta ${card.name} está duplicada, o que não é permitido, exceto para terrenos básicos.`);
+            }
+            cardNames.add(card.name);
+        }
+    
+        // Salva o baralho no banco de dados
+        await this.deckModel.create(deck);
+        return 'Baralho importado com sucesso!';
+    }
 
     async getAllCards(): Promise<Card[]> {
         try {

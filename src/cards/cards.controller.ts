@@ -5,6 +5,8 @@ import { Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/authorization/roles.decorator';
 import { Role } from 'src/authorization/enums/functions.enum';
+import { BadRequestException } from '@nestjs/common';
+
 
 @UseGuards(AuthGuard)
 @Roles(Role.Admin)
@@ -76,6 +78,18 @@ export class CardsController {
             console.log("Error: " + err);
         }
     }
+
+    // Rota para importar um baralho e validar no formato Commander
+    @Roles(Role.User, Role.Admin)
+    @Post('/importDeck')
+    async importDeck(@Body() deck: any): Promise<string> {
+        try {
+         return await this.cardsService.importDeck(deck);
+        } catch (error) {
+         throw new BadRequestException(error.message);
+        }
+    }
+
 
     @Roles(Role.User, Role.Admin)
     @Post('/seedingDeck/:id')
