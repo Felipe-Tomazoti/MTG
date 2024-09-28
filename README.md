@@ -16,6 +16,8 @@
 #### MongoDB Compass: [Donwload](https://www.mongodb.com/try/download/compass)  
 
 #### Postman: [Donwload](https://www.postman.com/downloads/)  
+
+
  
 
 #
@@ -26,15 +28,15 @@
 ![image](https://github.com/user-attachments/assets/44a823a6-ebcc-4ebe-b70f-300dba7567d1)
 
 
-### Configurando o .env
-Lembre-se de preencher o arquivo .env da API conforme o exemplo abaixo.
+### Criando e Configurando o .env
+Lembre-se de criar e preencher o arquivo .env da API conforme o exemplo abaixo.
 
 ![image](https://github.com/user-attachments/assets/4257fcbf-20d3-4897-95a9-16367a2219a0)
 
 
 **ATENÇÃO**
 
-Antes de preencher as informações do .env, o usuário deve ser criado no MongoDB, conforme mostrado no exemplo abaixo.
+Antes de rodar a aplicação, o usuário deve ser criado no MongoDB, conforme mostrado no exemplo abaixo.
 
 ![image](https://github.com/user-attachments/assets/5030ead0-6368-4540-8a86-eacf435ae3c7)
 
@@ -42,12 +44,15 @@ Antes de preencher as informações do .env, o usuário deve ser criado no Mongo
 ### Use o seguinte comando iniciar a API:
 `npm start`
 
-### Agora você já pode testar as rotas da API 
-#### Rotas de Cartas
- - /importDeck - (@Post) 
- - /seedingDeck/:id - (@Post)
- - /myDecks - (@Get)
- - /byName/:name - (@Get)
+### Agora você já pode testar as rotas da API, faça o donwload das [Rotas](https://cdn.discordapp.com/attachments/1081547979065921650/1289689406944313406/MTG.postman_collection.json?ex=66f9bc5b&is=66f86adb&hm=d611cd0a6bce8d74bc3facbb103920650058f8dae45029a8c6aefc0835acf47e&)
+
+No Postman click em importar:
+
+![image](https://github.com/user-attachments/assets/1070ed3c-e98d-4df5-8a89-4ba268ca3c67)
+
+
+Primeiro passo execute a rota para criar usuarios e logo em seguida utilize a rota de autenticação para gerar o token, com o token gerado você pode adicionalo nas demais requisições para o seu funcionamento.
+
  
   
  ###
