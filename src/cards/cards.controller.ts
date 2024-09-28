@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Res, Req, UseGuards } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { Card } from './card';
 import { Response } from 'express';
@@ -101,4 +101,14 @@ export class CardsController {
             console.log("Error: " + err);
         }
     }
+
+    // Rota para listar os baralhos do usuário logado
+    @UseGuards(AuthGuard)
+    @Get('myDecks')
+    async getUserDecks(@Req() req) {
+      const userId = req.user.userId; // Verifique se userId existe em req.user
+      return this.cardsService.getDecksByUser(userId);
+    }
+    
+    
 }

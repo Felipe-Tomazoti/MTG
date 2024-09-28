@@ -14,11 +14,11 @@ const cardsCreated: CardInterface[] = [];
 export class CardsService {
     constructor(
         @InjectModel(Card.name) private cardModel: Model<Card>,
-        @InjectModel(Deck.name) private deckModel: Model<Deck>
+        @InjectModel(Deck.name) private deckModel: Model<Deck>,
     ) {}
 
     async importDeck(deck: any): Promise<string> {
-            // Verifica se o baralho tem 100 cartas
+         // Verifica se o baralho tem 100 cartas
         if (deck.cards.length !== 100) {
             throw new BadRequestException('O baralho deve conter exatamente 100 cartas.');
         }
@@ -41,6 +41,11 @@ export class CardsService {
         // Salva o baralho no banco de dados
         await this.deckModel.create(deck);
         return 'Baralho importado com sucesso!';
+    }
+
+    // Busca os baralhos do usuário logado
+    async getDecksByUser(userId: string): Promise<Deck[]> {
+        return this.deckModel.find({ userId }).exec();
     }
 
     async getAllCards(): Promise<Card[]> {
