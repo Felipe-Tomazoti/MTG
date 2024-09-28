@@ -2,7 +2,7 @@
 
  
 
- Um sistema de gerenciamento de baralhos para o jogo de cartas Magic the Gathering. Utiliza a API do [Scryfall](https://scryfall.com/docs/api) para buscar e montar decks com base nas regras de formato Commander. Os decks são compostos por 1 comandante e 99 cartas seguindo as cores permitidas. Possui autenticação e autorização de usuários, suporte para múltiplos decks por usuário, cache para otimização de listagem e importação de decks via JSON com validação de regras. O sistema permite listagem de decks do usuário logado e acesso restrito para listar todos os decks. Testes de performance foram realizados para avaliar a eficiência do cache.
+ Um sistema de gerenciamento de baralhos para o jogo de cartas Magic the Gathering. Utiliza a API do [Scryfall](https://scryfall.com/docs/api) para buscar e montar decks com base nas regras de formato Commander. Os decks são compostos por 100 cartas, sendo elas pelo menos 1 comandante. Possui autenticação e autorização de usuários, suporte para múltiplos decks por usuário e importação de decks via JSON com validação de regras. O sistema permite listagem de decks do usuário logado e acesso restrito para listar todos os decks. 
 
 
 ### Trabalho realizado por:
