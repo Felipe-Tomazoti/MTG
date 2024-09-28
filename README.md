@@ -31,7 +31,8 @@
 ### Criando e Configurando o .env
 Lembre-se de criar e preencher o arquivo .env da API conforme o exemplo abaixo.
 
-![image](https://github.com/user-attachments/assets/4257fcbf-20d3-4897-95a9-16367a2219a0)
+![image](https://github.com/user-attachments/assets/c3ee6758-ced9-4434-9771-22e2b367f6d0)
+
 
 
 **ATENÇÃO**
