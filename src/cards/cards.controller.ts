@@ -1,12 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Res, Req, UseGuards } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import { Card } from './card';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Roles } from 'src/authorization/roles.decorator';
 import { Role } from 'src/authorization/enums/functions.enum';
 import { BadRequestException } from '@nestjs/common';
-
 
 @UseGuards(AuthGuard)
 @Roles(Role.Admin)
@@ -15,6 +14,28 @@ export class CardsController {
     constructor(
         private readonly cardsService: CardsService
     ) { }
+
+    @Get('/myDecks')
+async getUserDecks(@Req() req: Request) {
+    try {
+        const userKey = Object.keys(req).find(key => key === 'user');
+        
+        if (userKey) {
+            const user = req[userKey]; // Acessando o valor do 'user'
+            const userId = user?.sub; // Pegando o ID do usuário
+
+            if (!userId) {
+                throw new BadRequestException('User ID not found');
+            }
+
+            return this.cardsService.getDecksByUser(userId);
+        } else {
+            throw new BadRequestException('User not found in request');
+        }
+    } catch (error) {
+        console.log("Error aqui: ", error);
+    }
+}
 
     @Get()
     async getAllCards(): Promise<Card[]> {
@@ -79,17 +100,15 @@ export class CardsController {
         }
     }
 
-    // Rota para importar um baralho e validar no formato Commander
     @Roles(Role.User, Role.Admin)
     @Post('/importDeck')
     async importDeck(@Body() deck: any): Promise<string> {
         try {
-         return await this.cardsService.importDeck(deck);
+            return await this.cardsService.importDeck(deck);
         } catch (error) {
-         throw new BadRequestException(error.message);
+            throw new BadRequestException(error.message);
         }
     }
-
 
     @Roles(Role.User, Role.Admin)
     @Post('/seedingDeck/:id')
@@ -101,14 +120,4 @@ export class CardsController {
             console.log("Error: " + err);
         }
     }
-
-    // Rota para listar os baralhos do usuário logado
-    @UseGuards(AuthGuard)
-    @Get('myDecks')
-    async getUserDecks(@Req() req) {
-      const userId = req.user.userId; // Verifique se userId existe em req.user
-      return this.cardsService.getDecksByUser(userId);
-    }
-    
-    
 }

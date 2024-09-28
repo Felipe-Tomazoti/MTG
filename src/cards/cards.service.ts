@@ -7,8 +7,6 @@ import { BadRequestException } from '@nestjs/common';
 import { Deck } from './deck';
 import * as fs from 'fs';
 import * as path from 'path';
-import { AuthService } from 'src/auth/auth.service';
-
 const cardsCreated: CardInterface[] = [];
 
 @Injectable()
@@ -19,32 +17,19 @@ export class CardsService {
     ) {}
 
     async importDeck(deck: any): Promise<string> {
-         // Verifica se o baralho tem 100 cartas
         if (deck.cards.length !== 100) {
             throw new BadRequestException('O baralho deve conter exatamente 100 cartas.');
         }
     
-         // Verifica se há exatamente um comandante
         const commanders = deck.cards.filter(card => card.type.includes('Legendary') && card.type.includes('Creature'));
-        if (commanders.length !== 1) {
-                throw new BadRequestException('O baralho deve conter exatamente um comandante lendário.');
-            }
-    
-         // Verifica se não há cartas duplicadas (exceto terrenos básicos)
-        const cardNames = new Set();
-        for (const card of deck.cards) {
-           if (cardNames.has(card.name) && !card.type.includes('Basic Land')) {
-                throw new BadRequestException(`A carta ${card.name} está duplicada, o que não é permitido, exceto para terrenos básicos.`);
-            }
-            cardNames.add(card.name);
+        if (commanders.length < 1) {
+            throw new BadRequestException('O baralho deve conter pelo menos um comandante lendário.');
         }
     
-        // Salva o baralho no banco de dados
         await this.deckModel.create(deck);
         return 'Baralho importado com sucesso!';
     }
 
-    // Busca os baralhos do usuário logado
     async getDecksByUser(userId: string): Promise<Deck[]> {
         return this.deckModel.find({ userId }).exec();
     }
@@ -174,7 +159,7 @@ export class CardsService {
                 if (err) {
                     console.log('Deu erro: ' + err);
                 } else {
-                    console.log(`Arquivo ${filename} criado com sucesso.`);
+                    return
                 }
             });
 

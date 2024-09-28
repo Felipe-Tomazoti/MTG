@@ -10,7 +10,7 @@ import { Deck, DeckSchema } from './deck';
     MongooseModule.forFeature([
       { name: Card.name, schema: CardSchema },
       { name: Deck.name, schema: DeckSchema } // Registro do Deck no Mongoose
-    ])
+    ]),
   ],
   controllers: [CardsController],
   providers: [CardsService]
