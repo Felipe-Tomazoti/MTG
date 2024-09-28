@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CardInterface } from './card.interface';
 import * as fs from 'fs';
 import * as path from 'path';
+import { AuthService } from 'src/auth/auth.service';
 
 const cardsCreated: CardInterface[] = [];
 
@@ -99,7 +100,6 @@ export class CardsService {
 
     async createDeckByLegendary(legend: string) {
         try {
-            // Fetch the legendary card
             const response = await fetch(`https://api.scryfall.com/cards/search?q=name%3A${legend}`);
             if (!response) {
                 throw new Error(`HTTP error! status: ${(await response).status}`);
